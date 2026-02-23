@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 import threading
 import time
 from django.views.decorators.csrf import csrf_exempt
@@ -23,4 +23,11 @@ def check_post(request):
         data = request.POST
         return HttpResponse(f"the Data are:{data}")
     
-    return HttpResponse("This is GET request") #always return in invalid case also with reason or django throws error.
+    return HttpResponse("This is GET request") #always return invalid case also with reason or django throws error eg(if post not found return also for get.).
+
+@csrf_exempt #also need to disable cross site request forge protection
+def delete_post(request,item_id):
+    if request.method == "DELETE":
+        # item_id = request.GET.get("id") #query parameter style , use rest style-> industry standard.
+        return HttpResponse(f"Deleted item :{item_id}")
+    return HttpResponseNotAllowed(['DELETE'])
