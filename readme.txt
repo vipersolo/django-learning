@@ -1,1 +1,1 @@
-practising Django .
+practicing Django .
