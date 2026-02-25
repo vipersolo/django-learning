@@ -7,3 +7,9 @@ python manage.py migrate demoapp 0001 - Apply migrations for demoapp up to migra
 python manage.py makemigrations demoapp --name add_description_field - adding name in migration files.
 
 Testcase - setUp class  -case sensitive.
+
+normalization (many-to-many)-> If we try to store many-to-many inside the Student table, student id will repeat → and that breaks normalization. (student,course)
+ie why we make 3rd table for one-to-many relationship.
+
+Forward: Product → category (single object) Reverse:Category → products (multiple objects)
+
