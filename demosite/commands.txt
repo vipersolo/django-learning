@@ -1,0 +1,9 @@
+python manage.py sqlmigrate appname 0001 -> shows sql commands of the specific migration file without executing
+
+python manage.py showmigrations -> Shows all migrations for all apps and tells you which ones are applied and which are not.([]-not done,[x]-done)
+
+python manage.py migrate demoapp 0001 - Apply migrations for demoapp up to migration 0001.
+
+python manage.py makemigrations demoapp --name add_description_field - adding name in migration files.
+
+Testcase - setUp class  -case sensitive.
