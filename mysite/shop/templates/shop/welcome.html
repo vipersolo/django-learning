@@ -7,5 +7,10 @@
 </head>
 <body>
     <h1>Hello welcome to django templates '{{name}}'</h1>
+    {% if age >= 18 %} <!--  very important django operators needs space around it , or error comes as the whole is taken as 1 token -->
+        <p>You are an adult, over 18</p>
+    {% else %}
+        <p>You are a minor please logout</p>
+    {% endif %}
 </body>
 </html>
