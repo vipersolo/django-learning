@@ -5,5 +5,7 @@ from . import views
 
 urlpatterns = [
     path('',views.home_view,name="home"),
-    path('welcome/',views.hello_view,name="hello")
+    path('welcome/',views.hello_view,name="hello"),
+    path('base/',views.base_view,name='base'),
+    path('inherited/',views.inherited_view,name='inherited')
 ]

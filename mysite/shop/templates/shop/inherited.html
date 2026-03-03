@@ -1,0 +1,12 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}
+NEW title inherited
+{% endblock %}
+
+{% block content %}
+<!-- {{block.super}} for keeping the content from base.html and adding (only the contents from specific block it's called from) -->
+<P>this is the new content from in herited file .</P>
+{% endblock %}
+
+<!-- to keep the base content use {{block.super}}  -->

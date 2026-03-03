@@ -8,3 +8,9 @@ def hello_view(request):
 def home_view(request):
     context = {"value":5000,"age":25}
     return render(request,"shop/home.html",context)
+
+def base_view(request):
+    return render(request,'shop/base.html')
+
+def inherited_view(request):
+    return render(request,'shop/inherited.html')
