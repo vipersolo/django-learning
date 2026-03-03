@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .forms import ContactForm
 
 # Create your views here.
 def hello_view(request):
@@ -14,3 +15,19 @@ def base_view(request):
 
 def inherited_view(request):
     return render(request,'shop/inherited.html')
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            print(f"{name},{email},{message}")
+
+            return render(request,'shop/thankyou.html',{'name':name,'email':email,'message':message})
+        
+    else:
+        form = ContactForm()
+        return render(request,'shop/contact.html',{'form':form})
