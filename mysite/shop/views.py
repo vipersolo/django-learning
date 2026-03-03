@@ -10,7 +10,7 @@ def home_view(request):
     return render(request,"shop/home.html",context)
 
 def base_view(request):
-    return render(request,'shop/base.html')
+    return render(request,'base.html')
 
 def inherited_view(request):
     return render(request,'shop/inherited.html')
