@@ -8,5 +8,7 @@ urlpatterns = [
     path('welcome/',views.hello_view,name="hello"),
     path('base/',views.base_view,name='base'),
     path('inherited/',views.inherited_view,name='inherited'),
-    path('contact/',views.contact_view,name='contact')
+    path('contact/',views.contact_view,name='contact'),
+    path('register/',views.employee_register,name='register'),
+    path('register/sucess',views.success,name='success')
 ]

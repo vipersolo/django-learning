@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product,Category
+from .models import Product,Category,Employee
 # Register your models here.
 
 
@@ -20,3 +20,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_per_page = 25
     autocomplete_fields = ("category",)
     list_select_related = ("category",) # to use sql join(single query instead of 2 ) , solves n+1 query , ie extra query to turn category id to name etc...
+
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('first_name','last_name','email','department','joining_date')
+    list_per_page = 25

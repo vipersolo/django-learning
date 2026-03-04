@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .forms import ContactForm
+from django.shortcuts import render,redirect
+from .forms import ContactForm,EmployeeForms
 
 # Create your views here.
 def hello_view(request):
@@ -31,3 +31,17 @@ def contact_view(request):
     else:
         form = ContactForm()
         return render(request,'shop/contact.html',{'form':form})
+    
+
+def employee_register(request):
+    if request.method == "POST":
+        form = EmployeeForms(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success')
+    else:
+        form = EmployeeForms()
+    return render(request,'shop/register.html',{'form':form})
+    
+def success(request):
+    return render(request,'shop/success.html')
