@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .forms import ContactForm,EmployeeForms
+from .models import Employee
 
 # Create your views here.
 def hello_view(request):
@@ -37,11 +38,18 @@ def employee_register(request):
     if request.method == "POST":
         form = EmployeeForms(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('success')
+            employeeobj = Employee.objects.create(
+                first_name = form.cleaned_data['first_name'],
+                last_name = form.cleaned_data['last_name'],
+                email = form.cleaned_data['email'],
+                department = form.cleaned_data['department'],
+            )
+            return redirect('success',pk=employeeobj.pk)
     else:
         form = EmployeeForms()
-    return render(request,'shop/register.html',{'form':form})
+    return render(request,'shop/register.html',{'form':form}) # if validation fails, 'form' is from POST,not else (in order to show errors), refresh just does the last request , ie post, errors should'nt go away.
+
     
-def success(request):
-    return render(request,'shop/success.html')
+def success(request,pk):
+    current_user_details = Employee.objects.get(pk=pk)
+    return render(request,'shop/success.html',{'current_user_details':current_user_details})

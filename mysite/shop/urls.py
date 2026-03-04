@@ -10,5 +10,5 @@ urlpatterns = [
     path('inherited/',views.inherited_view,name='inherited'),
     path('contact/',views.contact_view,name='contact'),
     path('register/',views.employee_register,name='register'),
-    path('register/sucess',views.success,name='success')
+    path('register/success/<int:pk>',views.success,name='success')
 ]
