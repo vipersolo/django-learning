@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Success</title>
+</head>
+<body>
+    <h2>Order placed successfully</h2>
+    <p>Your Order ID: {{order.id}}</p>
+    <p>Status: {{order.status}}</p>
+    <p><a href="{% url 'product_list' %}">Continue Shopping</a></p>
+</body>
+</html>

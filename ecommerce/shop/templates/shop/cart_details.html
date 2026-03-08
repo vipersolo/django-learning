@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart details</title>
+</head>
+<body>
+    <ul>
+        {% for item_set in products %}
+            <li>
+                {{item_set.product.name}} - X{{item_set.quantity}} - {{item_set.subtotal}}
+                <a href="{% url 'remove_from_cart' item_set.product.id  %}">Remove</a>
+            </li>
+
+        {% endfor %}
+    </ul>
+    <p><b>Total:</b>{{total}}</p>
+    <p><a href="{% url 'product_list' %}">Continue Shopping:</a></p>
+    {% if products %}
+    <a href="{% url 'checkout'  %}">Checkout</a>
+    {% else %}
+    <p>Your cart is empty</p>
+    {% endif %}
+</body>
+</html>
