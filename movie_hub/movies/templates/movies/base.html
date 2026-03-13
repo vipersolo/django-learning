@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Movie site</h2>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'movie_list' %}">Movies list</a>
+    <a href="{% url 'my_movies' %}">My Movies</a>
+    <a href="{% url 'add_movie' %}">Add Movie</a>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'logout_view' %}">Logout</a>
+    <br>    
+    <br>    
+    <form method="get" action="{% url 'search_movies' %}">
+        <input type="text" name="q" placeholder="Search movie names or actor names" value="{{ context.query }}">
+        <select name="category">
+            <option value="">All categories</option>
+            {% for cat in categories %}
+            <option value="{{cat.id}}" 
+                {% if selected_category == cat.id|stringformat:"s" %}
+                selected
+                {% endif %}
+            >{{cat.name}}
+            </option>
+            {% endfor %}
+        </select>
+
+        
+    </form>
+    
+
+    <h2>Categories</h2>
+    {% for cat in categories  %}
+        <a href="{% url 'category_movies' cat.id %}">{{cat.name}}</a>
+    {% endfor %}
+    <hr>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

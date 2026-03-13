@@ -1,0 +1,22 @@
+{% extends 'movies/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My movies</title>
+</head>
+<body>
+    {% block content %}
+    {% if movies %}
+        {% for movie in movies %}
+            <h3><a href="{% url 'movie_detail' movie.id %}">{{movie.title}}</a></h3>
+            <p>Category: {{movie.catergory}}</p>
+            <p>Added by user: {{movie.user}} </p>
+        {% endfor %}
+    {% else %}
+    <p>No Movies Added</p>
+    {% endif %}
+    {% endblock %}
+</body>
+</html>

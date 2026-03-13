@@ -1,0 +1,21 @@
+{% extends "movies/base.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie list</title>
+</head>
+<body>
+    {% block content %}
+        <h1>Welcome to movie list (on development)</h1>
+        {% for movie in movies %}
+            <h3><a href="{% url 'movie_detail' movie.id %}">{{movie.title}}</a></h3>
+            <p>Category: {{movie.catergory}}</p>
+            <p>Added by user: {{movie.user}} </p>
+        {% endfor %}
+    {% endblock %}
+    
+</body>
+</html>

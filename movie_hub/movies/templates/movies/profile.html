@@ -1,0 +1,26 @@
+{% extends 'movies/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Profile Details</h1>
+    {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+        <p style="color: red;">{{message}}</p>
+        {% endfor %}
+    {% endif %}
+    <p>username: {{request.user.username}}</p>
+    <p>first_name: {{request.user.first_name}}</p>
+    <p>last_name: {{request.user.last_name}}</p>
+    <p>email: {{request.user.email}}</p>
+    <a href="{% url 'edit_profile' %}">Edit profile</a>
+    <br>
+    <br> 
+    {% endblock %}
+</body>
+</html>
