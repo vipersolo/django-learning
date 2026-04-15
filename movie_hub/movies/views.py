@@ -130,7 +130,7 @@ def delete_movie(request,id):
     return redirect("movie_list")
 
 def category_movies(request,id):
-    movies=Movie.objects.filter(id=id)
+    movies=Movie.objects.filter(catergory=id)
 
     return render(request,"movies/movie_list.html",{'movies':movies})
 
