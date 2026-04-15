@@ -33,7 +33,7 @@ def login_view(request):
             user = authenticate(request,username=username,password=password)
             if user is not None: #important if authentication fails what to do , use if to check is not none
                 login(request,user)
-                return redirect("home")
+                return redirect("movie_list")
             else:
                 messages.error(request,"invalid credentials!!!")
     else:
@@ -52,6 +52,7 @@ def home(request):
 def profile(request):
     return render(request,"movies/profile.html")
 
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
         form = ProfileEditForm(request.POST,instance=request.user)
@@ -77,7 +78,9 @@ def add_movie(request):
     return render(request,"movies/add_movie.html",{"form":form})
 
 
+
 #rendering movie_list
+@login_required
 def movie_list(request):
     movies = Movie.objects.all().order_by('-created_at')
     return render(request,"movies/movie_list.html",{"movies":movies})
@@ -103,12 +106,13 @@ def edit_movie(request,id):
     return render(request,"movies/edit_movie.html",{"form":form})
 
 
+@login_required
 #movie detail with id from movie_list
 def movie_detail(request,id):
     movie = get_object_or_404(Movie,id=id)
     return render(request,"movies/movie_detail.html",{"movie":movie})
 
-
+@login_required
 def my_movies(request):
     movies = Movie.objects.filter(user=request.user)
     return render(request,"movies/my_movies.html",{"movies":movies})
@@ -116,6 +120,7 @@ def my_movies(request):
 
 
 #delete movie if user created that movie
+@login_required
 def delete_movie(request,id):
     movie = get_object_or_404(Movie,id=id)
 
