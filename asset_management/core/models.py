@@ -58,6 +58,10 @@ class Assignment(models.Model):
 
       def save(self, *args, **kwargs):
             self.full_clean()  # IMPORTANT: ensures clean() runs
+            # 2. If this is a new assignment (no PK yet)
+            if not self.pk:
+                  self.asset.status = 'assigned'
+                  self.asset.save()
             super().save(*args, **kwargs)
 
       def __str__(self):
@@ -78,16 +82,20 @@ class RepairTicket(models.Model):
       technician = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True)
 
       def clean(self):
-            active_tickets = RepairTicket.objects.filter(
-                  asset = self.asset,
-                  status__in=['pending','in_progress']
-            )
+        # ADD THIS CHECK: If asset is missing, don't run the validation yet
+        if not hasattr(self, 'asset') or self.asset is None:
+            return
 
-            if self.pk:
-                  active_tickets =  active_tickets.exclude(pk=self.pk)     
+        active_tickets = RepairTicket.objects.filter(
+            asset=self.asset,
+            status__in=['pending', 'in_progress']
+        )
 
-            if active_tickets.exists():
-                  raise ValidationError("This asset already has an active repair ticket (pending/in progress).")
+        if self.pk:
+            active_tickets = active_tickets.exclude(pk=self.pk)
+
+        if active_tickets.exists():
+            raise ValidationError("This asset already has an active repair ticket.")
       
       def save(self, *args,**kwargs):
             self.full_clean()
