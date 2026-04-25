@@ -11,6 +11,8 @@ from django.utils import timezone
 from django.db.models import F
 from .forms import RepairRequestForm
 from .models import RepairTicket
+from .forms import InventoryItemForm
+from django.core.exceptions import ValidationError
 
 
 def home(request):
@@ -237,14 +239,16 @@ def report_issue(request, asset_id):
             ticket.asset = asset
             ticket.status = 'pending'
             
-            # This will now trigger full_clean() safely
-            ticket.save()
-            
-            # Update the Asset itself
-            asset.status = 'repair'
-            asset.save()
-            
-            return redirect('employee_dashboard')
+            try:
+                ticket.save()  # triggers full_clean()
+                
+                asset.status = 'repair'
+                asset.save()
+                
+                return redirect('employee_dashboard')
+
+            except ValidationError as e:
+                form.add_error(None, e.messages[0])  # attach error to form
     else:
         form = RepairRequestForm()
         
@@ -283,3 +287,16 @@ def assign_technician(request, ticket_id):
         'ticket': ticket,
         'technicians': technicians
     })
+
+
+@login_required
+@role_required(allowed_roles=['admin'])
+def inventory_create(request):
+    if request.method == 'POST':
+        form = InventoryItemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('inventory_list')
+    else:
+        form = InventoryItemForm()
+    return render(request, 'inventory/inventory_form.html', {'form': form})

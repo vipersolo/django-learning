@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
+import dj_database_url
 load_dotenv()
+from datetime import timedelta
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
@@ -35,8 +36,35 @@ SECRET_KEY = 'django-insecure-ml)vgx7uq^lmfg(46^d(m!0$+rn7rj9zrz78p0sct)=c-p+44z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY, # Uses your Django secret key
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# Replace with your actual Render URL
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://asset-mangement-system.onrender.com',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+
+]
 
 # Application definition
 
@@ -48,9 +76,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'rest_framework',
+    'corsheaders', # Necessary to allow React to talk to Django
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,13 +115,19 @@ WSGI_APPLICATION = 'asset_management.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -128,3 +165,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+# Allow React (running on localhost:3000) to access the API
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]

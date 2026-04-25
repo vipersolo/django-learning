@@ -3,7 +3,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Office Inventory (Consumables)</h2>
-    <button class="btn btn-primary btn-sm" disabled>+ New Item Type</button>
+    <a href="{% url 'inventory_create' %}" class="btn btn-primary btn-sm">+ New Item Type</a>
 </div>
 
 <div class="card shadow">

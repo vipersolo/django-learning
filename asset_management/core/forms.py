@@ -1,5 +1,6 @@
 from django import forms
 from .models import Assignment, Asset, User
+from .models import InventoryItem
 
 class AssetForm(forms.ModelForm):
     class Meta:
@@ -49,3 +50,16 @@ class RepairRequestForm(forms.ModelForm):
                 'rows': 3
             }),
         }   
+
+
+
+
+class InventoryItemForm(forms.ModelForm):
+    class Meta:
+        model = InventoryItem
+        fields = ['item_type', 'quantity', 'threshold']
+        widgets = {
+            'item_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'threshold': forms.NumberInput(attrs={'class': 'form-control'}),
+        }

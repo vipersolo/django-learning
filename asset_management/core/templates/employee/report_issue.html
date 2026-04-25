@@ -15,6 +15,13 @@
                         <button type="submit" class="btn btn-danger">Submit Repair Ticket</button>
                         <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
+                    {% comment %} {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %} {% endcomment %}
                 </form>
             </div>
         </div>

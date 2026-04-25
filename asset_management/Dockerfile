@@ -5,6 +5,9 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# defaults to 8000.
+ENV PORT=8000
+
 # Set work directory
 WORKDIR /app
 
@@ -22,4 +25,4 @@ COPY . /app/
 RUN python manage.py collectstatic --noinput
 
 # Run using Gunicorn (Industry standard for production)
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "asset_management.wsgi:application"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && python setup_roles.py && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:$PORT asset_management.wsgi:application"]

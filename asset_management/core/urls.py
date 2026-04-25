@@ -1,8 +1,28 @@
-from django.urls import path
+# core/urls.py (or your project's main urls.py)
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from rest_framework.routers import DefaultRouter
+from .api_views import (
+    AssetViewSet, 
+    InventoryViewSet, 
+    AssignmentViewSet, 
+    RepairTicketViewSet,
+    UserViewSet
+)
 from . import views
+from rest_framework_simplejwt.views import TokenRefreshView
+from .api_views import MyTokenObtainPairView
+
+
+router = DefaultRouter()
+router.register(r'assets', AssetViewSet)
+router.register(r'inventory', InventoryViewSet)
+router.register(r'assignments', AssignmentViewSet)
+router.register(r'repairs', RepairTicketViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
+    # Keep your old paths here...
     path('', auth_views.LoginView.as_view(template_name='registration/login.html'),name='login'),
     path('logout/',auth_views.LogoutView.as_view(),name='logout'),
     path('dashboard/',views.dashboard_redirect,name='dashboard_redirect'),
@@ -23,5 +43,13 @@ urlpatterns = [
     path('asset/<int:asset_id>/report/', views.report_issue, name='report_issue'),
     path('admin/repairs/', views.manage_repairs, name='manage_repairs'),
     path('admin/repairs/assign/<int:ticket_id>/', views.assign_technician, name='assign_technician'),
-]
+    path('inventory/add/', views.inventory_create, name='inventory_create'),
+    
 
+    # New API entry point
+    path('api/', include(router.urls)),
+    # Login / Get Token
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # Refresh Token
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
